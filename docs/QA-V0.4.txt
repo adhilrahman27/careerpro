@@ -1,0 +1,14 @@
+CareerRadar Pro v0.4 local QA — 28 October 2026
+PYTHONPATH=. pytest -q tests                     PASS (13 tests)
+PYTHONPATH=. python tests/browser_smoke.py    PASS
+PYTHONPATH=. python tests/browser_tailoring_smoke.py PASS
+node --check web/assets/app.js                PASS
+python -m compileall -q server                PASS
+TypeScript transpileModule of modified TSX    PASS (syntax only)
+PDF export via ReportLab and PDF render        PASS (sample visually inspected)
+DOCX export via python-docx and DOCX render    PASS (sample visually inspected)
+Actual OpenAI network call                      NOT RUN (no key)
+Android APK build / native device validation    NOT RUN
+Production billing / notifications             NOT RUN
+Security audit / deployment                    NOT RUN
+Release classification                        DEVELOPMENT BUILD, NOT READY FOR SALE

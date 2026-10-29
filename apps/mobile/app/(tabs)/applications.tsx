@@ -1,0 +1,11 @@
+import React,{useCallback,useState} from 'react';
+import {Text,View} from 'react-native';
+import {router,useFocusEffect} from 'expo-router';
+import {Application,call,getToken} from '../../src/api';
+import {Layout,Btn,Empty,Field,st} from '../../src/ui';
+export default function Applications(){const [items,setItems]=useState<Application[]>([]),[company,setCompany]=useState(''),[title,setTitle]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+const load=useCallback(async()=>{try{if(!await getToken()){setError('Sign in to track applications.');return}setItems(await call<Application[]>('/applications'));setError('')}catch(e){setError((e as Error).message)}},[]);
+useFocusEffect(load);
+const add=async()=>{setBusy(true);try{await call('/applications','POST',{company,title,status:'interested',notes:''});setTitle('');setCompany('');await load()}catch(e){setError((e as Error).message)}finally{setBusy(false)}};
+const next=async(a:Application)=>{const statuses=['interested','applied','assessment','interview','followup','offer','rejected','withdrawn'];const to=statuses[(statuses.indexOf(a.status)+1)%statuses.length];try{await call('/applications/'+a.id,'PUT',{company:a.company,title:a.title,status:to,notes:a.notes});await load()}catch(e){setError((e as Error).message)}};
+return <Layout title="Applications" subtitle="Monitor your career opportunities from interest to offer.">{error?<Text style={st.error}>{error}</Text>:null}{error.includes('Sign in')?<Btn title="Sign in" onPress={()=>router.push('/login')}/>:<View style={st.card}><Text style={st.jobtitle}>Add an application</Text><Field label="Company" value={company} onChange={setCompany}/><Field label="Job title" value={title} onChange={setTitle}/><Btn title={busy?'Saving…':'Save application'} onPress={add} disabled={busy||!company.trim()||!title.trim()}/></View>}{items.length?items.map(a=><View key={a.id} style={st.card}><Text style={st.jobtitle}>{a.title}</Text><Text style={st.meta}>{a.company} · Status: {a.status}</Text><View style={{alignSelf:'flex-start',marginTop:10}}><Btn outline title="Next status →" onPress={()=>next(a)}/></View></View>):<Empty title="No applications yet" detail="Add applications you have made and follow their progress."/>}</Layout>}

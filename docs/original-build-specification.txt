@@ -1,0 +1,1963 @@
+# MASTER BUILD PROMPT — CAREERRADAR PRO
+## Build a Complete, Production-Ready AI Job Discovery Platform for Android, iOS and Web
+
+### YOUR ROLE
+
+Act as an elite software engineering organization consisting of:
+
+- Principal Full-Stack Architect
+- Senior Android and iOS Engineer
+- Senior React and Next.js Engineer
+- Supabase/PostgreSQL Database Architect
+- AI/LLM Integration Engineer
+- Job Data Aggregation Engineer
+- Cybersecurity Engineer
+- UI/UX Product Designer
+- DevOps and Cloud Engineer
+- Automated QA Engineer
+- Google Play and App Store Compliance Specialist
+- SaaS Product and Monetization Specialist
+- Technical Documentation Engineer
+
+Your responsibility is to design, develop, connect, test, document and prepare for commercial deployment an original job discovery application that competes with JobSpy and other modern job aggregation services.
+
+**Do not build a prototype, static demonstration, disconnected UI, or superficial landing page. Build real, functioning software.**
+
+The deliverable must include complete source code, database migrations, integrations, mobile builds, deployment configuration, automated tests, commercial administration tools and documentation.
+
+Do not claim a feature is finished until you have implemented and verified it. Do not describe the application as production-ready unless its release gates have actually passed.
+
+---
+
+# 1. PRODUCT IDENTITY
+
+**Working product name:** CareerRadar Pro
+
+The name must be replaceable through a central branding configuration. Confirm name, domain and trademark availability before commercial publication.
+
+**Product category:** AI-powered job discovery, job alerts, career assistance and application management.
+
+**Initial target market:**
+- United Arab Emirates
+- Saudi Arabia
+- Qatar
+- Oman
+- Kuwait
+- Bahrain
+
+Build an architecture that also supports expansion into India, Europe, the UK, North America and other markets without rebuilding the system.
+
+**Primary users:**
+- Job seekers
+- Fresh graduates
+- Experienced professionals
+- Engineers and construction professionals
+- Skilled workers and technicians
+- Recruiters and approved employers
+- Platform administrators
+
+**Core promise:**
+
+"Find relevant, verified job opportunities from multiple trusted sources, understand your chances of qualifying, improve your CV and manage your entire job search in one place."
+
+Create a distinctive visual identity. Do not copy the JobSpy logo, design, text, proprietary assets, source code or protected brand elements.
+
+---
+
+# 2. NON-NEGOTIABLE PRODUCT REQUIREMENTS
+
+1. Deliver a real Android application and responsive web application backed by the same production database.
+2. Support iOS using the shared React Native application.
+3. Use real, legitimately sourced job data in production.
+4. Never present sample, fabricated or AI-generated vacancies as real job listings.
+5. Implement every visible navigation item, button, form and workflow.
+6. Provide proper authentication, authorization and data protection.
+7. Ensure synchronization between mobile and web.
+8. Make all important functionality usable on mobile screens.
+9. Support low-bandwidth conditions and unreliable connections.
+10. Never expose API keys, service-role credentials or payment secrets in client applications.
+11. Provide clear errors, loading states, empty states and retry options.
+12. Never silently swallow errors or pretend that failed operations succeeded.
+13. Implement commercial subscription management and an administrative dashboard.
+14. Provide an independent, transferable codebase with an explicit licence inventory.
+15. Generate real build artifacts wherever the execution environment and credentials permit.
+16. Produce verifiable evidence for tests and builds.
+17. Never report a feature as tested when testing was not performed.
+18. Make all unavailable credentials, approvals and external dependencies visible in a final release checklist.
+19. Avoid unnecessary permissions, privacy-invasive SDKs and misleading marketing claims.
+20. Treat security, reliability and user trust as release-blocking requirements.
+
+---
+
+# 3. TECHNOLOGY STACK
+
+Use this preferred architecture unless a demonstrably better and more maintainable alternative is required.
+
+### Mobile
+- React Native
+- Expo with development builds and EAS Build
+- TypeScript
+- Expo Router
+- React Query/TanStack Query
+- Zustand for limited client UI state
+- SecureStore for appropriate sensitive client storage
+- Expo Notifications with supported push providers
+- Platform-compliant deep links and universal/app links
+
+### Web
+- Next.js with App Router
+- React
+- TypeScript
+- Tailwind CSS
+- Accessible, reusable component library
+- Server rendering where beneficial for SEO and performance
+
+### Backend
+- Supabase
+- PostgreSQL
+- Supabase Auth
+- Supabase Storage
+- Row Level Security
+- Supabase Edge Functions or a secured Node.js service
+- Background job processing with persistent queue state
+- Scheduled ingestion workers
+- Server-side email and notification processing
+
+### Data collection
+- TypeScript-based provider adapters
+- Authorized job-feed integrations
+- Source-specific normalization modules
+- Scheduled data synchronization
+- Source health monitoring
+
+### AI
+- Provider-agnostic AI adapter
+- OpenAI and/or Google Gemini
+- Embeddings or other suitable semantic matching when justified
+- Deterministic fallback ranking when AI is unavailable
+- Configurable quotas and monthly AI spending limits
+
+### Payments
+- Google Play Billing for eligible Android digital purchases
+- Apple In-App Purchase for applicable iOS transactions
+- Stripe for eligible web purchases
+- RevenueCat may be used as a cross-platform entitlement layer when appropriate
+- Server-verified payment events and subscription entitlements
+
+### Infrastructure
+- Vercel or equivalent for web
+- Supabase for database and authentication
+- Secure worker hosting for scheduled ingestion
+- GitHub Actions or equivalent CI/CD
+- Structured error monitoring
+- Analytics respecting user consent and privacy
+- Automated database backups and documented restoration procedures
+
+### Code organization
+
+Create a maintainable monorepo:
+
+- `apps/mobile`
+- `apps/web`
+- `apps/admin` (or securely isolated admin routes in the web app)
+- `packages/ui`
+- `packages/types`
+- `packages/validation`
+- `packages/api`
+- `packages/job-sources`
+- `packages/matching`
+- `packages/ai`
+- `packages/config`
+- `services/job-ingestion`
+- `supabase/migrations`
+- `supabase/functions`
+- `tests`
+- `docs`
+- `.github/workflows`
+
+Use a supported package manager and monorepo task runner.
+
+Maintain strict TypeScript checking and consistent code quality rules.
+
+---
+
+# 4. USER AUTHENTICATION AND ACCESS CONTROL
+
+Implement:
+
+- Email/password registration
+- Email verification
+- Google sign-in
+- Apple sign-in where required and supported
+- Forgot password and secure password reset
+- Session persistence
+- Secure refresh-token management
+- Sign out from current session
+- Sign out from all devices
+- Optional biometric reauthentication
+- Account deletion
+- Personal data export
+- Consent and privacy preference management
+
+### Roles
+
+**Job Seeker**
+Can discover jobs, build CVs, save searches, create alerts, manage applications and use permitted AI tools.
+
+**Employer**
+Can submit vacancies, manage their own listings and access permitted applicant information after employer verification and appropriate consent.
+
+**Moderator**
+Can review reported listings, approve employer submissions and handle support cases.
+
+**Administrator**
+Can manage operational resources according to explicitly granted permissions.
+
+**Super Administrator**
+Can configure billing, job sources, permissions, global settings and other critical platform operations.
+
+Use a common login system and route authenticated users automatically to the correct dashboard based on server-validated roles.
+
+Never determine admin authority solely from client-side route checks or editable user metadata.
+
+Implement least-privilege authorization and complete Supabase RLS policies.
+
+---
+
+# 5. FIRST-TIME USER ONBOARDING
+
+Create an elegant onboarding experience.
+
+Collect only relevant information, with appropriate optional fields:
+
+- Full name
+- Email
+- Country of residence
+- Preferred work countries
+- Preferred cities
+- Current job title
+- Desired job titles
+- Industry
+- Years of experience
+- Relevant skills
+- Education
+- Employment type
+- Work arrangement
+- Expected salary and currency
+- Notice period
+- Work authorization or sponsorship requirements, where relevant
+- Preferred alert frequency
+- Language preferences
+
+Allow users to upload a CV during onboarding or skip that step.
+
+When a CV is uploaded, extract relevant professional information and offer to populate the profile.
+
+Require user confirmation before saving AI-extracted information.
+
+Do not infer sensitive personal attributes unnecessarily.
+
+Display a profile-completion indicator and explain how additional information improves job matching.
+
+Users must be able to edit onboarding selections later.
+
+---
+
+# 6. JOB DISCOVERY ENGINE
+
+Create a genuinely functional job search engine.
+
+### Search capabilities
+
+Support searching by:
+
+- Job title
+- Keywords
+- Company
+- Industry
+- Skills
+- Country
+- City
+- Work location
+- Salary range
+- Employment type
+- Experience range
+- Education requirements
+- Posted date
+- Remote/hybrid/on-site
+- Visa sponsorship, where explicitly stated
+- Employer
+- Job source
+- Language requirements
+- Seniority
+
+### Search modes
+
+- Standard keyword search
+- Advanced filter search
+- Natural-language search
+- Saved searches
+- Recently viewed
+- Recommended for you
+- Latest jobs
+- Trending categories
+- Remote opportunities
+
+Example natural-language query:
+
+"Find MEP Planning Engineer jobs in Dubai or Abu Dhabi with salary above AED 7,000, requiring Primavera P6 and approximately three years of experience."
+
+Translate the query into structured filters and display the interpreted criteria so the user can correct them.
+
+If a salary or requirement is unavailable, label it unknown. Never invent missing job details.
+
+### Job cards
+
+Each job card must display, when available:
+
+- Job title
+- Company
+- Company logo if usage is permitted
+- Location
+- Employment type
+- Salary and currency
+- Posted or first-seen date
+- Source
+- Match score
+- Saved status
+- Remote/hybrid/on-site label
+- Verification or provenance status
+
+Actions:
+
+- View details
+- Save
+- Share
+- Hide
+- Report
+- Apply on original source
+
+Build working pagination or infinite scrolling with stable cursors.
+
+Ensure refreshing, sorting and changing filters never produce duplicate cards or inconsistent results.
+
+---
+
+# 7. REAL JOB DATA COLLECTION
+
+This is a core component and must be implemented seriously.
+
+### Authorized sources
+
+Investigate and implement suitable permitted integrations, prioritizing:
+
+- Greenhouse public job board interfaces
+- Lever postings interfaces
+- Approved Adzuna API access
+- Approved commercial job-feed providers
+- Authorized employer career feeds
+- Approved partner feeds
+- Direct employer submissions
+
+Design adapters for future integrations such as Workday, Ashby, SmartRecruiters and other ATS providers when suitable permissions and technical access are available.
+
+LinkedIn, Indeed, Bayt, Naukrigulf, Glassdoor and similar sources must only be integrated through permitted access methods, contractual partnerships, official APIs, or explicitly authorized feeds.
+
+Do not implement unauthorized scraping, credential harvesting, CAPTCHA bypassing, access-control circumvention or prohibited redistribution.
+
+Public availability of an endpoint is not proof of commercial redistribution rights.
+
+### Source adapter contract
+
+Every provider integration must define:
+
+- Provider ID
+- Authentication method
+- Authorization/licensing status
+- Terms and usage restrictions
+- Rate limits
+- Supported countries
+- Pagination method
+- Data schema
+- Fetch function
+- Normalization function
+- Incremental update strategy
+- Error handling
+- Source attribution requirements
+- Expiration behavior
+- Retry policy
+- Monitoring metrics
+
+### Standard job record
+
+Normalize vacancies into a consistent schema containing:
+
+- Internal UUID
+- Provider ID
+- External job ID
+- Canonical job URL
+- Apply URL
+- Company ID and name
+- Title
+- Description
+- Required qualifications
+- Skills
+- Responsibilities
+- Benefits
+- Country and city
+- Work arrangement
+- Employment type
+- Experience requirements
+- Salary minimum/maximum
+- Salary currency and payment interval
+- Posting date, if verifiable
+- First discovered time
+- Last verified time
+- Closing date, if published
+- Job status
+- Provenance metadata
+- Verification state
+- Original source attribution
+
+### Duplicate management
+
+Implement duplicate detection using:
+
+1. Exact provider/job IDs
+2. Canonical URL matching
+3. Normalized company/title/location matching
+4. Content fingerprints
+5. Conservative fuzzy similarity scoring
+
+Preserve source provenance when merging duplicates.
+
+Do not incorrectly merge distinct vacancies just because their titles are similar.
+
+### Freshness rules
+
+- Track when a job was originally published, when it was discovered and when it was last checked.
+- Never change its original posting date merely because it was collected again.
+- Detect removed or expired positions.
+- Suppress stale jobs according to configurable rules.
+- Avoid sending repeated alerts for the same vacancy.
+- Verify that application links remain usable where possible.
+- Flag uncertain freshness rather than falsely declaring a job active.
+
+### Background jobs
+
+Implement:
+
+- Regular provider synchronization
+- Incremental updates
+- Duplicate processing
+- Expiration checks
+- Failed-job retry queues
+- Exponential backoff and rate limiting
+- Idempotent ingestion
+- Source failure isolation
+- Monitoring and alerts
+- Configurable refresh schedules
+
+Workers must continue functioning when the administrator closes the browser.
+
+Do not depend on a mobile app remaining open for data collection.
+
+---
+
+# 8. AI JOB MATCHING SYSTEM
+
+Build an explainable personalized job-matching engine.
+
+The engine must compare the candidate profile and available job requirements.
+
+### Matching factors
+
+Use an initial configurable scoring model such as:
+
+- Skills compatibility: 30%
+- Job title relevance: 25%
+- Experience compatibility: 15%
+- Location and work preferences: 10%
+- Salary compatibility: 10%
+- Employment preferences and recency: 10%
+
+Treat these weights as defaults, not scientifically validated probabilities.
+
+Support hard filters for clearly incompatible requirements.
+
+Handle missing data explicitly and avoid treating unknown information as either a confirmed match or mismatch.
+
+### Results
+
+Show a match score and explanation:
+
+**Example**
+
+Match Score: 87/100
+
+Strong matches:
+- Primavera P6
+- Construction scheduling
+- MEP coordination
+- UAE project experience
+
+Potential gaps:
+- Power BI reporting
+- Specific project sector exposure
+
+Recommendations:
+- Highlight relevant scheduling experience in the CV
+- Add verifiable project achievements
+- Prepare examples of delay analysis
+
+The score represents estimated relevance, **not the probability of receiving an interview or job offer**.
+
+Allow users to understand and modify their preferences.
+
+Provide an AI-disabled fallback matching system.
+
+Cache results appropriately and recalculate when profiles or jobs change.
+
+---
+
+# 9. AI CV BUILDER AND ATS ANALYZER
+
+Provide a comprehensive resume management module.
+
+### CV upload
+
+Accept:
+
+- PDF
+- DOCX
+- Supported text formats
+
+Validate file type, file size and content.
+
+Scan uploads using suitable security protections.
+
+Extract information including:
+
+- Contact details
+- Professional summary
+- Experience
+- Education
+- Skills
+- Certifications
+- Projects
+- Software proficiency
+- Achievements
+
+Allow users to correct extraction errors.
+
+### CV builder
+
+Provide:
+
+- Professional templates
+- ATS-friendly layouts
+- Entry-level template
+- Engineering template
+- Management template
+- Technical specialist template
+- Executive template
+- Modern corporate template
+
+Templates must be original, consistent and correctly printable.
+
+### AI CV personalization
+
+Users should be able to select a vacancy and request a tailored resume.
+
+The system should:
+
+- Analyze the job requirements
+- Compare the candidate's actual experience
+- Recommend relevant keywords
+- Improve phrasing
+- Highlight existing accomplishments
+- Suggest missing supporting information
+- Generate a job-specific professional summary
+
+**Never fabricate qualifications, certifications, employment dates, experience or achievements.**
+
+Implement:
+
+- CV version history
+- Rename and duplicate
+- Download as PDF
+- Optional DOCX export
+- Delete CV
+- Compare CV versions
+- Job-specific CV generation
+- Cover letter generation
+- ATS readability checks
+
+Avoid pretending to simulate a particular employer's proprietary ATS scoring.
+
+---
+
+# 10. AI CAREER ASSISTANT
+
+Create a conversational assistant with authorized access to the user's own job-search data.
+
+Examples:
+
+"Find newly posted planning engineer jobs in Dubai."
+
+"Why am I not matching this vacancy?"
+
+"Improve my CV for this position."
+
+"Which skills should I learn to become a Senior Planning Engineer?"
+
+"Prepare interview questions for a Primavera P6 planning engineer."
+
+"Show the jobs I saved last week."
+
+"Which applications need follow-up?"
+
+The assistant must:
+
+- Use real database records
+- Respect user permissions
+- Never invent vacancies
+- Include relevant job links
+- Distinguish facts from AI suggestions
+- Confirm before destructive actions
+- Avoid claiming to have applied to a vacancy unless a supported integration confirms success
+- Implement usage limits
+- Handle provider outages
+- Minimize confidential information sent to AI vendors
+
+Include conversation history with delete controls.
+
+---
+
+# 11. AI INTERVIEW PREPARATION
+
+Provide:
+
+- Industry-specific questions
+- Technical questions
+- HR interview questions
+- Behavioral questions
+- Scenario-based questions
+- Interview answer feedback
+- Practice sessions
+- Scoring explanations
+- Improvement suggestions
+
+Offer text interviews initially.
+
+Where feasible, add microphone-based interview practice with explicit permission and transparent audio processing.
+
+Include specialized question banks for:
+
+- Planning engineers
+- MEP engineers
+- Civil engineers
+- Electrical engineers
+- Mechanical engineers
+- HSE professionals
+- Project managers
+- Quantity surveyors
+- Finance professionals
+- IT specialists
+- Administration roles
+
+AI feedback must be constructive and clearly identified as simulated evaluation.
+
+---
+
+# 12. SMART JOB ALERTS
+
+Build server-driven alerts.
+
+Users must be able to create multiple alerts with different criteria.
+
+Examples:
+
+- Planning Engineer, Dubai, AED 7,000+
+- Mechanical Engineer, Abu Dhabi
+- Remote Software Developer
+- Junior Civil Engineer, Qatar
+
+Alert frequencies:
+
+- Immediately when newly discovered
+- Every 2 hours
+- Every 6 hours
+- Daily digest
+- Weekly digest
+- Disabled
+
+Allow:
+
+- Quiet hours
+- Time zone selection
+- Push alerts
+- Email alerts
+- Category-based alert settings
+- Pause/resume
+- Alert deletion
+- Notification history
+
+Use device notification permissions correctly.
+
+Persist notification settings across devices.
+
+Implement deduplication, delivery attempts, retry handling and stale-device-token cleanup.
+
+A matching job should not repeatedly trigger alerts unless explicitly appropriate.
+
+Provide in-app notification history and deep links to relevant job details.
+
+---
+
+# 13. APPLICATION TRACKING
+
+Create an application management dashboard.
+
+Statuses:
+
+- Interested
+- Saved
+- Applied
+- Assessment
+- Interview
+- Follow-up required
+- Offer received
+- Rejected
+- Withdrawn
+- Archived
+
+Enable:
+
+- Manual status changes
+- Application date
+- Company and vacancy reference
+- Notes
+- Attached CV version
+- Follow-up date
+- Interview schedule
+- Salary offered
+- Recruiter contact information
+- Reminder alerts
+- Timeline of changes
+
+Provide both Kanban and list views.
+
+Allow users to record applications completed on external websites.
+
+Do not infer that an external application succeeded merely because the user opened an apply link.
+
+Only mark application submission as verified when an authorized integration returns confirmation.
+
+Enable CSV export of the application tracker.
+
+---
+
+# 14. EMPLOYER AND RECRUITER PORTAL
+
+Build a controlled employer portal.
+
+Employers can:
+
+- Register
+- Submit company details
+- Request company verification
+- Create a job listing
+- Edit their own listings
+- Set expiration dates
+- Pause or close positions
+- View job performance analytics
+- Receive candidate applications where supported
+- Contact applicants with appropriate authorization
+
+All employer listings must be subject to trust and abuse controls.
+
+Implement:
+
+- Employer verification workflow
+- Company-domain verification where appropriate
+- Fraud-risk review
+- Duplicate posting checks
+- Posting quotas
+- Moderator approval
+- Employer suspension
+- Spam controls
+
+Do not allow employers unrestricted access to user CVs, contact information or profiles.
+
+Provide applicant consent and visibility controls.
+
+---
+
+# 15. JOB FRAUD AND TRUST SYSTEM
+
+Build a transparent trust and reporting system.
+
+Detect possible warning signs such as:
+
+- Requests for upfront recruitment fees
+- Suspicious external links
+- Impersonated employers
+- Misleading company identities
+- Repeated suspicious postings
+- Unverified recruiter contacts
+- Missing application details
+- Unusual contact patterns
+
+Use clear categories:
+
+- Verified by platform
+- Source confirmed
+- Unverified
+- Under review
+- Removed for policy violation
+
+Never label a company fraudulent solely because an AI model suspects risk.
+
+Permit users to report suspicious vacancies.
+
+Provide moderator review, evidence collection, audit logs and appeal procedures.
+
+Make verification claims accurate and traceable.
+
+---
+
+# 16. SALARY INTELLIGENCE
+
+Provide a salary comparison feature.
+
+Support currencies including AED, SAR, QAR, OMR, KWD, BHD, INR, USD, GBP and EUR.
+
+Features:
+
+- Salary filtering
+- Gross salary display
+- Monthly/yearly comparison
+- Explicit currency conversion
+- Source-labelled salary benchmarks
+- Salary expectation settings
+- Compensation package comparison
+- Salary negotiation assistant
+
+If conversion is provided, use a sourced exchange rate with timestamp.
+
+Do not manufacture salary benchmarks.
+
+Only display market estimates when legitimate, sufficiently representative salary data is available.
+
+Clearly separate employer-stated salaries, market estimates and user-provided amounts.
+
+---
+
+# 17. PREMIUM SUBSCRIPTIONS AND COMMERCIAL FEATURES
+
+Create a subscription business model with configurable plans.
+
+### Free
+
+- Job search
+- Basic saved jobs
+- Limited alerts
+- Basic application tracker
+- Limited AI matching
+- Limited monthly AI usage
+
+### Pro
+
+- More saved searches
+- Expanded alerts
+- Advanced AI matching
+- Full CV builder
+- More CV tailoring
+- Interview preparation
+- Advanced filters
+- Application reminders
+- Enhanced analytics
+
+### Business / Employer
+
+- Employer listings
+- Company dashboard
+- Recruiting analytics
+- Team account management
+- Additional listing limits
+- Candidate management with consent
+
+All plans, prices, quotas and features must be editable from administrator-controlled configuration.
+
+Do not hard-code commercial prices throughout the application.
+
+### Billing requirements
+
+Implement:
+
+- Monthly subscriptions
+- Annual subscriptions
+- Free trial only if explicitly configured
+- Automatic renewal information
+- Upgrade/downgrade
+- Restore purchases
+- Subscription cancellation guidance
+- Expiration handling
+- Grace periods
+- Refund reconciliation
+- Webhook handling
+- Entitlement synchronization
+- Purchase verification
+- Duplicate webhook protection
+
+Use Google Play Billing for Android in-app digital subscriptions unless a documented exception applies.
+
+Use Apple In-App Purchase on iOS where required.
+
+Use Stripe for permitted web transactions.
+
+Never unlock paid functionality merely because the client reports a successful purchase.
+
+Subscription entitlements must be verified and managed on the backend.
+
+If store accounts or products are not configured, provide fully working sandbox integration, with clear production setup steps and no misleading live-purchase claims.
+
+---
+
+# 18. COMPLETE MOBILE APPLICATION
+
+Create a beautiful, professional interface.
+
+### Main bottom navigation
+
+1. Discover
+2. Alerts
+3. Saved
+4. Applications
+5. Profile
+
+Place AI assistance prominently through a dedicated floating or top-level entry point without obscuring content.
+
+### Required screens
+
+- Splash
+- Introduction
+- Login
+- Registration
+- Forgot password
+- Onboarding
+- Discover jobs
+- Search results
+- Advanced filters
+- Job detail
+- AI match explanation
+- Saved jobs
+- Job alerts
+- Alert builder
+- Application tracker
+- Application details
+- CV management
+- CV builder/editor
+- CV preview
+- Interview preparation
+- AI assistant
+- Salary insights
+- Notifications
+- Subscription plans
+- Subscription management
+- Profile editor
+- Privacy settings
+- Language settings
+- Help and support
+- Report a job
+- Account deletion
+
+Create working transitions and navigation for every screen.
+
+### Design requirements
+
+Use a premium modern appearance with:
+
+- Clean typography
+- Professional navy/blue accent palette
+- Subtle gradients
+- Rounded cards
+- Comfortable spacing
+- High contrast
+- Light mode
+- Dark mode
+- Elegant loading skeletons
+- Smooth but restrained animations
+- Consistent icons
+- Professional empty-state illustrations
+- Accessible form controls
+
+Do not overuse transparency or glass effects in ways that reduce readability.
+
+### Mobile usability
+
+- Respect safe areas and display cutouts.
+- Handle Android system navigation and back buttons.
+- Support dynamic text sizing.
+- Keep layouts within the screen boundaries.
+- Prevent horizontal overflow.
+- Ensure keyboards do not obscure input fields.
+- Support small and large devices.
+- Avoid unnecessary zooming or viewport resizing.
+- Support accessibility labels and screen readers.
+- Test slow networks and offline transitions.
+- Preserve drafts where appropriate.
+
+---
+
+# 19. RESPONSIVE WEBSITE
+
+Create a fully functional website with the same account and job data.
+
+### Public pages
+
+- Home
+- Browse jobs
+- Job details
+- Companies
+- Pricing
+- About
+- Contact
+- FAQ
+- Privacy Policy
+- Terms of Service
+- Cookie preferences where applicable
+- Account deletion request
+- Support
+
+### Authenticated dashboard
+
+- Personalized overview
+- Job recommendations
+- Search
+- Alerts
+- Saved jobs
+- Applications
+- CV builder
+- Interview practice
+- AI assistant
+- Account settings
+- Billing
+
+### Website requirements
+
+- Mobile-first responsive design
+- SEO-friendly public job pages
+- Canonical URLs
+- Structured job posting metadata when appropriate
+- Sitemap
+- Robots configuration
+- Fast loading
+- Keyboard accessibility
+- Social sharing previews
+- Working search and filter URLs
+- Session synchronization
+- Accessible forms
+- Error pages
+- Secure redirects
+
+Avoid publishing expired or unverified jobs in search-engine metadata as though they are current.
+
+---
+
+# 20. ADMINISTRATION DASHBOARD
+
+Create a complete protected admin panel.
+
+### Overview
+
+Display:
+
+- Total users
+- New users
+- Active users
+- Active jobs
+- Newly collected jobs
+- Expired jobs
+- Verified companies
+- Source health
+- Alert deliveries
+- Conversion metrics
+- Active subscriptions
+- Revenue
+- AI usage
+- Operational errors
+
+### Job management
+
+- Search all jobs
+- View full source metadata
+- Modify internal classifications
+- Hide or remove listings
+- Flag fraudulent jobs
+- Review duplicates
+- View collection history
+- Inspect broken links
+- Review employer submissions
+
+### Data source management
+
+- Enable/disable providers
+- Configure provider credentials
+- View authorization/licence status
+- Set polling frequency
+- View quotas
+- See ingestion success rate
+- View last successful synchronization
+- Retry failed imports
+- Inspect error logs
+- Monitor source expiration behavior
+
+### User management
+
+- Search users
+- View account status
+- Moderate abuse
+- Suspend/reactivate accounts
+- Handle deletion requests
+- Manage role assignments
+- Review subscription status
+- View support history where authorized
+
+### AI management
+
+- Configure model/provider
+- Set AI budgets
+- Configure usage limits
+- Monitor token usage
+- Review errors and latency
+- Manage prompt versions
+- Disable degraded AI features safely
+
+### Commercial management
+
+- Subscription plans
+- Feature entitlements
+- Discounts where supported
+- Revenue reporting
+- Failed payment monitoring
+- Refund reconciliation
+- Employer packages
+
+### Content management
+
+- FAQ
+- Landing-page copy
+- Legal document versions
+- Announcement banners
+- Email templates
+- Push notification templates
+- Support articles
+
+### System health
+
+- Source failures
+- Worker queue backlog
+- API errors
+- Database health
+- Notification failures
+- Billing webhook failures
+- Security events
+- Backup status
+
+Require strong authorization, privileged-action audit trails and appropriate MFA protections for administrative accounts.
+
+---
+
+# 21. MULTILINGUAL SUPPORT
+
+Default language: English.
+
+Fully implement Arabic localization with proper right-to-left layouts.
+
+Create localization support for future languages including:
+
+- Hindi
+- Malayalam
+- Urdu
+- Tamil
+
+The language engine must handle:
+
+- UI text
+- RTL layout
+- Currency display
+- Date display
+- Number formatting
+- Language-specific typography
+- Notification content
+- Email templates
+
+Do not rely on automatically translating legally sensitive text without review.
+
+---
+
+# 22. DATABASE DESIGN
+
+Provide complete version-controlled SQL migrations.
+
+At minimum, implement appropriately normalized tables covering:
+
+- Users and profiles
+- Roles and permissions
+- Candidate preferences
+- Skills
+- Candidate skills
+- CV documents
+- CV versions
+- Companies
+- Employer verification
+- Job providers
+- Provider configurations
+- Ingestion runs
+- Source errors
+- Jobs
+- Job source records
+- Job skills
+- Job match results
+- Saved jobs
+- Saved searches
+- Alert rules
+- Notifications
+- Device tokens
+- Applications
+- Application history
+- Interviews
+- AI usage
+- AI conversations
+- Support tickets
+- Job reports
+- Moderation actions
+- Subscription plans
+- Customer entitlements
+- Subscription events
+- Payments and reconciliation records
+- Admin audit logs
+- User consent records
+- Privacy requests
+- System settings
+
+Implement:
+
+- Primary and foreign keys
+- Uniqueness constraints
+- Proper data types
+- Referential integrity
+- Appropriate cascading rules
+- Useful database indexes
+- Full-text search
+- Transaction safety
+- Migrations
+- Rollback/recovery guidance
+- RLS policies
+- Audit fields
+- Soft deletion only where justified
+- Appropriate retention periods
+- Database backups and restoration testing
+
+Use server-generated IDs and protected timestamps.
+
+Create database integration tests, especially for user isolation and permission boundaries.
+
+---
+
+# 23. API DESIGN
+
+Develop typed, versioned APIs or secure server actions with well-defined contracts.
+
+Cover:
+
+- Authentication/session validation
+- Profiles
+- Candidate preferences
+- Jobs
+- Search
+- Filters
+- Recommendations
+- Saved jobs
+- Alerts
+- Applications
+- CV management
+- AI services
+- Payments
+- Subscriptions
+- Employer operations
+- Administration
+- Support
+- Data export/deletion
+
+All inputs must undergo server-side validation.
+
+Implement:
+
+- Authentication
+- Authorization
+- Rate limiting
+- Pagination
+- Schema validation
+- Consistent errors
+- Request tracing
+- Timeouts
+- Retry rules
+- Idempotency for sensitive operations
+- Webhook signature verification
+- Structured logging
+- API documentation
+
+Do not trust fields such as user ID, subscription tier, role or price merely because they are supplied by the client.
+
+---
+
+# 24. SECURITY AND PRIVACY
+
+Treat resumes and career profiles as sensitive personal information.
+
+Implement:
+
+- HTTPS everywhere
+- Secure authentication
+- Least-privilege access
+- Row Level Security
+- Private CV storage
+- Short-lived signed URLs where appropriate
+- File upload validation
+- Malware scanning or suitable upload protection
+- Secure session management
+- XSS prevention
+- SQL injection prevention
+- CSRF protections where applicable
+- SSRF protection for fetched external URLs
+- Strict URL validation
+- Rate limiting
+- Authentication abuse protection
+- Secure secret management
+- Encrypted communication
+- Audit logging
+- Dependency vulnerability scanning
+- Minimal data collection
+- Privacy consent records
+- Data export and deletion
+- Reasonable retention policies
+- Backup protection
+- Incident response documentation
+
+Do not log resumes, access tokens, payment details or confidential user data in ordinary diagnostic logs.
+
+Use authorization checks on every privileged server operation.
+
+Do not rely on hidden buttons as a security boundary.
+
+Review UAE personal data protection requirements and other applicable regulations for target markets.
+
+Prepare accurate, reviewable legal documentation.
+
+Never claim legal compliance without confirming implementation and obtaining necessary professional review.
+
+---
+
+# 25. ANALYTICS AND MONITORING
+
+Implement privacy-conscious analytics for:
+
+- Registrations
+- Activation
+- Searches
+- Search success rate
+- Job detail views
+- Saved jobs
+- Apply-link clicks
+- Alert conversions
+- Applications tracked
+- CV creation
+- Subscription conversions
+- Retention
+- Notification delivery
+- Job source success rates
+
+Track errors, response times and failed background processes.
+
+Provide actionable administrator alerts for critical incidents.
+
+Avoid collecting unnecessary personal information.
+
+Do not expose identifiable user activity to unauthorised administrators or external parties.
+
+---
+
+# 26. PERFORMANCE AND RELIABILITY
+
+Build for efficient operation on modest hosting budgets.
+
+Requirements:
+
+- Efficient database queries
+- Indexed search paths
+- Lazy loading
+- Appropriate caching
+- Image optimization
+- Paginated responses
+- Controlled AI token usage
+- Incremental job ingestion
+- Background processing
+- Idempotent scheduled jobs
+- Safe retries
+- Reduced unnecessary API requests
+- Proper connection management
+- Source-level circuit breakers
+- Stable loading and error states
+
+Set measurable performance targets and benchmark them.
+
+Initial engineering targets under representative test conditions:
+
+- No unhandled exceptions in tested critical user flows
+- No critical or high-severity known security vulnerabilities
+- Acceptable job search response times under documented test load
+- Smooth scrolling on representative mid-range Android devices
+- No duplicate notification floods
+- No loss of application-tracker changes during normal use
+- No cross-user data exposure
+- No silent billing entitlement failures
+
+Do not claim production-scale reliability based solely on local testing.
+
+---
+
+# 27. TESTING AND BUG-FIXING REQUIREMENTS
+
+Build a real automated quality assurance system.
+
+### Unit tests
+
+Cover:
+
+- Job normalization
+- Duplicate detection
+- Matching calculations
+- Salary and currency logic
+- Permissions
+- Subscription entitlements
+- Date/time calculations
+- Notification scheduling
+- Validation
+
+### Integration tests
+
+Cover:
+
+- Authentication
+- Database access
+- RLS isolation
+- Job source ingestion
+- Search API
+- Saved jobs
+- Alerts
+- CV storage
+- AI service fallbacks
+- Subscription webhooks
+- Account deletion
+
+### End-to-end tests
+
+Simulate important user journeys:
+
+1. Register and verify account.
+2. Complete onboarding.
+3. Upload a CV.
+4. Search for a job.
+5. Apply filters.
+6. Save a vacancy.
+7. Create an alert.
+8. Receive a test notification.
+9. Open a job from the notification.
+10. Record an application.
+11. Generate a tailored CV.
+12. Export PDF.
+13. Use AI interview practice.
+14. Purchase a sandbox subscription.
+15. Restore entitlements.
+16. Cancel a subscription.
+17. Export account data.
+18. Request account deletion.
+
+Also test employer and administrator journeys.
+
+### Edge-case testing
+
+Include:
+
+- Empty search results
+- Slow internet
+- No internet
+- Expired sessions
+- Invalid CVs
+- Oversized files
+- Provider outage
+- AI provider timeout
+- Interrupted upload
+- Notification permission denied
+- Payment declined
+- Duplicate billing webhook
+- Expired jobs
+- Invalid external links
+- Suspicious job submissions
+- Concurrent edits
+- RTL interface
+- Small screen devices
+- Long text and oversized job descriptions
+- Low memory conditions
+
+### Security testing
+
+- Test RLS policies.
+- Test privilege escalation attempts.
+- Test cross-account resource access.
+- Test private file access.
+- Test unauthorized admin endpoints.
+- Test malformed API requests.
+- Test duplicate payment processing.
+- Test URL and file-upload attacks.
+- Run dependency audits.
+- Review secrets exposure.
+
+### Required automated checks
+
+Configure reproducible commands for:
+
+- Code formatting
+- Linting
+- Type checking
+- Unit testing
+- Integration testing
+- End-to-end testing
+- Production web build
+- Android build validation
+- Dependency/security scanning
+
+All critical release checks must pass before declaring the build ready.
+
+Fix actual failures and rerun tests rather than hiding them, removing assertions or replacing failing tests with superficial ones.
+
+---
+
+# 28. GOOGLE PLAY AND APP STORE RELEASE PREPARATION
+
+Prepare for the applicable store requirements at the actual submission date.
+
+For Google Play, ensure:
+
+- Current target Android API compliance (API 36 or higher for new apps under the October 2026 requirements)
+- Correct package identifier
+- Release signing configuration
+- Android App Bundle generation
+- Appropriate notification permissions
+- Google Play Billing compliance
+- Account deletion functionality
+- Public account deletion URL
+- Privacy policy
+- Data safety disclosures
+- Content rating
+- Accurate feature declarations
+- Complete store listing
+- Store screenshots
+- Feature graphic
+- App icon
+- Support contact
+- Reviewer test account
+- Required testing tracks and eligibility
+
+For iOS, prepare:
+
+- Bundle identifier
+- Signing and provisioning instructions
+- App Store Connect metadata
+- Privacy disclosures
+- Sign in with Apple where applicable
+- In-app purchase compliance
+- Appropriate permissions
+- TestFlight testing
+- App review notes
+
+Store publication must not be represented as complete until the platform confirms approval.
+
+---
+
+# 29. BRANDING AND DESIGN ASSETS
+
+Create an original, professional brand system.
+
+Deliver:
+
+- App icon
+- Adaptive Android icon
+- Splash screen
+- Logo variants
+- Dark/light variants
+- Favicon
+- Color palette
+- Typography system
+- Basic brand guidelines
+- Landing-page assets
+- Social sharing artwork
+- Store screenshot layouts
+
+Make sure the installed app displays its actual icon, not a generic letter or placeholder.
+
+Support changing the branding without editing hundreds of source files.
+
+All third-party assets must have compatible commercial licences.
+
+---
+
+# 30. COMMERCIAL OWNERSHIP AND RESELLABILITY
+
+Make the product suitable for commercial SaaS operation or sale to another owner.
+
+Requirements:
+
+- Original application branding
+- Clearly identified intellectual property dependencies
+- Commercially compatible open-source licences
+- No stolen or unlicensed designs
+- No unauthorized job data redistribution
+- Environment-based configuration
+- Transferable deployment documentation
+- Database setup documentation
+- Domain configuration
+- Subscription configuration
+- Branding customization
+- Admin ownership transfer process
+- Source-code licence inventory
+- Software Bill of Materials
+- Backup and recovery procedure
+- Operational runbook
+- Support documentation
+- Maintenance and update guide
+
+Create a white-label configuration system for branding, support emails, colours, app display names and feature settings.
+
+Do not assume native package names, signing certificates or store accounts can be automatically transferred between businesses.
+
+Document which items require owner-controlled credentials, external approval or contractual transfer.
+
+---
+
+# 31. REQUIRED DELIVERABLES
+
+Produce the following actual deliverables:
+
+1. Complete mobile source code
+2. Complete web application source code
+3. Complete backend source code
+4. Admin dashboard
+5. Job provider adapter framework
+6. Working authorized job-source integrations
+7. Database schema and migration files
+8. Secure RLS policies
+9. Environment variable templates
+10. Configuration validation
+11. CI/CD workflows
+12. Automated test suites
+13. Android APK for appropriate testing, if build tools are available
+14. Signed or signing-ready Android AAB build configuration
+15. iOS build configuration and builds where signing access permits
+16. Deployment scripts/configuration
+17. API documentation
+18. Database documentation
+19. Architecture diagram
+20. Feature and permissions matrix
+21. Setup guide
+22. Deployment guide
+23. Administrator manual
+24. User manual
+25. Privacy and terms templates for legal review
+26. Google Play submission checklist
+27. App Store submission checklist
+28. Subscription setup guide
+29. Monitoring guide
+30. Backup/restore guide
+31. Third-party dependency and licence inventory
+32. Security review report
+33. Test evidence and results
+34. Known issues and limitations register
+35. Production readiness report
+
+Do not return only text descriptions of files. Create the files in the project workspace.
+
+---
+
+# 32. DEVELOPMENT EXECUTION INSTRUCTIONS
+
+Work through the complete engineering process.
+
+### Stage A — Project architecture
+
+- Inspect available development tools and environment.
+- Identify required external credentials.
+- Define production and development environments.
+- Create the monorepo.
+- Configure code standards and testing.
+- Design database schema.
+- Define APIs and integrations.
+- Document architecture decisions.
+
+### Stage B — Functional foundation
+
+- Implement authentication.
+- Implement profile management.
+- Create database tables and RLS.
+- Implement core job ingestion.
+- Implement job search.
+- Implement mobile and web discovery.
+- Implement saved jobs and saved searches.
+
+### Stage C — Advanced features
+
+- Implement matching.
+- Implement alerts.
+- Implement CV processing.
+- Implement AI features.
+- Implement application tracking.
+- Implement employer portal.
+- Implement moderation.
+
+### Stage D — Monetization and operations
+
+- Implement subscriptions.
+- Implement entitlement verification.
+- Build the admin dashboard.
+- Add monitoring.
+- Add legal/privacy controls.
+- Add localization.
+- Add export/deletion processes.
+
+### Stage E — Testing
+
+- Run static checks.
+- Run tests.
+- Fix failures.
+- Run full builds.
+- Test end-to-end workflows.
+- Review security.
+- Verify external integrations.
+- Document remaining limitations.
+
+### Stage F — Release preparation
+
+- Build production artifacts.
+- Verify release configuration.
+- Generate store assets.
+- Prepare deployment guides.
+- Produce readiness report.
+- Identify required human approvals and credentials.
+
+Maintain a task checklist and an implementation status report.
+
+When a test fails, investigate and correct the underlying issue.
+
+Never replace actual integration behavior with fake success messages.
+
+---
+
+# 33. SPECIAL RULES FOR AI CODING AGENTS
+
+Follow these rules throughout development.
+
+**Rule 1 — No unfinished interface**
+
+Do not create buttons that perform no action.
+
+**Rule 2 — No fake production data**
+
+Sample job data may exist only in isolated, clearly identified development fixtures.
+
+**Rule 3 — No placeholder backend**
+
+Do not substitute disconnected local storage for the required persistent backend.
+
+**Rule 4 — No misleading success messages**
+
+Confirm server-side success before showing successful completion.
+
+**Rule 5 — No exposed credentials**
+
+Keep secrets out of mobile bundles, browser code and source control.
+
+**Rule 6 — No fake AI results**
+
+AI responses must originate from configured models or clearly identified deterministic fallback logic.
+
+**Rule 7 — No silent failure**
+
+Handle loading, errors, retries and recovery.
+
+**Rule 8 — No false verification claims**
+
+Do not mark employers, jobs or qualifications verified without suitable evidence.
+
+**Rule 9 — No fake payment testing**
+
+Payment integrations must be verified using official test/sandbox mechanisms.
+
+**Rule 10 — No skipping core features**
+
+All features designated mandatory must be implemented or explicitly reported as blocked.
+
+**Rule 11 — No unauthorized scraping**
+
+Respect source terms, rate limits and commercial data rights.
+
+**Rule 12 — No imaginary builds**
+
+Provide build artifacts only when they were actually generated.
+
+**Rule 13 — No invented release readiness**
+
+List missing credentials, approvals, security work and testing honestly.
+
+**Rule 14 — No unnecessary clarification loops**
+
+Make sensible documented choices for ordinary engineering decisions. Request user input only when a secret, business ownership decision, payment account, approval or legal permission is genuinely required.
+
+**Rule 15 — Complete the implementation, not just a plan**
+
+Continue through code generation, testing, debugging and documentation using the tools available in the execution environment.
+
+---
+
+# 34. FINAL ACCEPTANCE CRITERIA
+
+The platform is ready for commercial release consideration only when the following conditions have verifiable evidence.
+
+### Functional
+
+- Users can register and log in.
+- Job ingestion works with authorized live sources.
+- Users can search real vacancies.
+- Filters return correct results.
+- Jobs are deduplicated.
+- Saved jobs persist.
+- Alerts are processed server-side.
+- Push notifications work on physical devices.
+- Users can upload and retrieve their own CVs.
+- AI matching uses real candidate/job data.
+- Application tracking works.
+- Subscription entitlements are verified.
+- Admin features enforce correct permissions.
+- Account export and deletion work.
+- Mobile and web share correct account data.
+
+### Security
+
+- No critical or high-severity known vulnerabilities remain.
+- RLS isolation tests pass.
+- User files cannot be accessed by unrelated users.
+- Secrets are not exposed.
+- Admin privileges cannot be obtained from the client.
+- Payment events are verified and idempotent.
+
+### Reliability
+
+- Critical automated tests pass.
+- Production web build succeeds.
+- Android release build succeeds where credentials/tools are available.
+- No critical user flow has a known reproducible crash.
+- Failed external providers degrade gracefully.
+- Notification and ingestion retries behave correctly.
+- Database backup restoration has been tested.
+
+### Commercial readiness
+
+- Legal documents are ready for review.
+- Job data licences and permissions are documented.
+- Store policy checks are complete.
+- Billing products are configured and tested.
+- Operational monitoring is active.
+- Deployment documentation is complete.
+- Ownership and licence inventory is complete.
+- Store review and any required human approval remain explicitly identified until complete.
+
+---
+
+# 35. FINAL OUTPUT FORMAT
+
+When implementation is complete, provide a structured project handover containing:
+
+### A. Product summary
+Describe what has actually been built.
+
+### B. Feature implementation matrix
+For each feature, report:
+- Implemented and verified
+- Implemented but not verified
+- Partially implemented
+- Blocked
+- Not implemented
+
+### C. Architecture
+Explain the technology stack, backend, integrations and security boundaries.
+
+### D. Database
+Provide migration details and deployment instructions.
+
+### E. Application links and files
+Provide actual project files, source paths, live links and mobile build artifacts where available.
+
+### F. Test results
+Show real commands, results, failures and fixes.
+
+### G. Security report
+Summarize completed checks and outstanding risks.
+
+### H. Commercial readiness
+Identify licences, payments, policies and remaining obligations.
+
+### I. Configuration checklist
+Clearly identify every API key, service account, store configuration or external approval needed from the owner.
+
+### J. Release status
+Choose exactly one:
+- Not ready
+- Development complete; validation pending
+- Release candidate; external approvals pending
+- Ready for store submission
+- Published and verified
+
+Never assign a higher status than the evidence supports.
+
+---
+
+# 36. START THE ACTUAL BUILD
+
+Begin development now.
+
+Your first actions must be:
+
+1. Inspect the current workspace.
+2. Define and create the project architecture.
+3. Generate the application structure.
+4. Implement database migrations, authentication and authorization.
+5. Build the live job data ingestion framework.
+6. Implement the web and mobile interfaces against the real backend.
+7. Continue through all mandatory modules.
+8. Execute automated checks and resolve failures.
+9. Produce build artifacts where possible.
+10. Deliver a truthful commercial release report.
+
+Do not stop after creating an attractive interface.
+
+Do not substitute a product specification for functioning software.
+
+Do not claim external credentials, job-feed licences, payments or app-store approvals have been obtained unless they genuinely have.
+
+Prioritize a complete, secure, maintainable, testable, commercially viable application.
+
+**The end goal is a fully owned, independently branded, sellable AI-powered job discovery business platform with synchronized Android, iOS and web experiences, legitimate live job data, AI career tools, subscription monetization, an operational administration system, and a documented pathway to production release.**
+
+**START IMPLEMENTATION.**

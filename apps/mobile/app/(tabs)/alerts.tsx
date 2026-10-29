@@ -1,0 +1,11 @@
+import React,{useState,useCallback} from 'react';
+import {Text,View,ActivityIndicator} from 'react-native';
+import {router,useFocusEffect} from 'expo-router';
+import {Alert,call,getToken} from '../../src/api';
+import {Layout,Btn,Empty,Field,C,st} from '../../src/ui';
+export default function Alerts(){const [items,setItems]=useState<Alert[]>([]),[query,setQuery]=useState(''),[city,setCity]=useState(''),[name,setName]=useState('My job alert'),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+const load=useCallback(async()=>{try{if(!await getToken()){setError('Sign in to create job alerts.');return}setItems(await call<Alert[]>('/alerts'));setError('')}catch(e){setError((e as Error).message)}},[]);
+useFocusEffect(load);
+const add=async()=>{setBusy(true);try{await call('/alerts','POST',{name,query,location:city,frequency:'daily'});setQuery('');setCity('');await load()}catch(e){setError((e as Error).message)}finally{setBusy(false)}};
+const remove=async(id:string)=>{try{await call('/alerts/'+id,'DELETE');await load()}catch(e){setError((e as Error).message)}};
+return <Layout title="Job alerts" subtitle="Get in-app updates when matching jobs are newly collected.">{error?<><Text style={st.error}>{error}</Text>{error.includes('Sign in')?<Btn title="Sign in" onPress={()=>router.push('/login')}/>:null}</>:null}<View style={st.card}><Text style={st.jobtitle}>Create new alert</Text><Field label="Alert name" value={name} onChange={setName}/><Field label="Job keyword" value={query} onChange={setQuery} placeholder="Planning Engineer"/><Field label="Location" value={city} onChange={setCity} placeholder="Dubai"/><Btn title={busy?'Creating…':'Create daily alert'} onPress={add} disabled={busy||!name.trim()}/></View><Text style={[st.jobtitle,{marginTop:15}]}>Your alert rules</Text>{items.length?items.map(a=><View key={a.id} style={st.card}><Text style={st.jobtitle}>{a.name}</Text><Text style={st.meta}>{a.query||'Any job'} · {a.location||'Anywhere'} · {a.frequency}</Text><View style={{marginTop:10,alignSelf:'flex-start'}}><Btn outline title="Delete alert" onPress={()=>remove(a.id)}/></View></View>):<Empty title="No job alerts configured" detail="Create your first alert using the form above."/>}<Text style={st.meta}>The self-hosted worker delivers in-app notifications. Native push requires additional configuration.</Text></Layout>}

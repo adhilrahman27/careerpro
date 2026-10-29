@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101c38"><meta name="description" content="Find relevant job openings and organize your search with CareerRadar Pro.">
+<title>CareerRadar Pro · Your next move starts here</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head><body>
+<div id="app" class="shell">
+<aside class="sidebar">
+ <a class="brand" href="#discover" aria-label="CareerRadar home"><span class="brandmark"><svg viewBox="0 0 48 48" width="32" height="32" aria-hidden="true"><circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity=".5"/><circle cx="24" cy="24" r="10" fill="none" stroke="currentColor" stroke-width="3"/><path d="M26 10L16 30l8-4 6 7 2-24z" fill="currentColor"/></svg></span><span>career<span class="brand-accent">radar</span><small>PRO</small></span></a>
+ <div class="nav-label">WORKSPACE</div>
+ <nav class="navlist" id="sidebar-nav" aria-label="Main navigation"></nav>
+ <div class="sidebar-lower"><div class="upgrade"><span class="upgrade-icon">✦</span><strong>Make your next move count</strong><p>Keep your searches, applications and alerts in one place.</p><button class="btn btn-light btn-small" data-action="profile">Complete profile <span>↗</span></button></div><div class="sidebar-footer"><span class="status-dot"></span> Workspace status <span id="backend-state">Checking</span></div></div>
+</aside>
+<div class="main-area">
+<header class="topbar"><button class="mobile-logo" data-action="discover" aria-label="Go to discover"><img src="/assets/icon.svg" width="34" height="34"> CareerRadar</button><div class="topbar-path"><span>Workspace</span><span class="slash">/</span><strong id="breadcrumb">Discover jobs</strong></div><div class="topbar-actions"><span class="today-chip">◷ <span id="today"></span></span><button class="icon-btn" title="Notifications" aria-label="Notifications" data-action="notifications">♧<span class="notice-dot" id="notification-dot" hidden></span></button><button class="user-pill" data-action="account"><span class="avatar" id="avatar">G</span><span id="user-display">Guest</span></button></div></header>
+<main id="page" tabindex="-1"><div class="loading-view">Loading your workspace...</div></main>
+<footer class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation"></footer>
+</div></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="dialog-root"></div>
+<script src="/assets/app.js" defer></script>
+</body></html>

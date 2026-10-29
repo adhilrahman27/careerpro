@@ -1,0 +1,38 @@
+import React,{useEffect,useState} from 'react';
+import {Alert,Linking,Pressable,Text,TextInput,View} from 'react-native';
+import {router} from 'expo-router';
+import {Layout,Btn,Empty,C,st} from '../../src/ui';
+import {call,DEMO_MODE,Job} from '../../src/api';
+import {getCompared,clearCompared} from '../../src/features';
+
+type Choice='comparison'|'walkins'|'report'|'offer'|'email'|'shares';
+type Compared={items:(Job&{trust?:{freshness:string},salary_min?:number,currency?:string})[]};
+const columns:[Choice,string,string][]=[
+ ['comparison','⇄ Compare jobs','Compare up to four vacancies saved from job details'],
+ ['walkins','⌖ Walk-in interview radar','Upcoming moderator-reviewed interview events'],
+ ['report','▥ Weekly progress','Tracked applications, saved jobs and alerts'],
+ ['offer','♧ UAE offer safety','Review warning signs and confirm via MOHRE'],
+ ['email','✉ Email review','Manually classify recruiter emails with your approval'],
+ ['shares','▣ CV sharing','See revocable private resume links (live backend only)']
+];
+export default function CareerTools(){const[tab,setTab]=useState<Choice|null>(null),[loading,setLoading]=useState(false),[error,setError]=useState(''),[data,setData]=useState<any>(null),[offer,setOffer]=useState(''),[subject,setSubject]=useState(''),[emailText,setEmailText]=useState('');
+const open=async(next:Choice)=>{setTab(next);setError('');setData(null);setLoading(true);try{
+ if(next==='comparison'){const ids=await getCompared();setData(ids.length>=2?await call<Compared>('/jobs/compare/batch?ids='+encodeURIComponent(ids.join(','))):{items:[],selected:ids.length})}
+ if(next==='walkins')setData(await call('/walkins'));
+ if(next==='report')setData(await call('/reports/weekly?weeks=8'));
+ if(next==='shares')setData(await call('/cv/shares'));
+ }catch(e){setError((e as Error).message)}finally{setLoading(false)}};
+const checkOffer=async()=>{setLoading(true);try{setData(await call('/offers/check','POST',{text:offer}));setError('')}catch(e){setError((e as Error).message)}finally{setLoading(false)}};
+const reviewEmail=async()=>{setLoading(true);try{setData(await call('/email/preview','POST',{sender:'',subject,body:emailText}));setError('')}catch(e){setError((e as Error).message)}finally{setLoading(false)}};
+return <Layout title="Career tools" subtitle="Trust, smarter applications and career insights — without fabricated claims.">
+{!tab?<>{columns.map(([id,title,detail])=><Pressable key={id} onPress={()=>open(id)} style={st.card}><Text style={st.jobtitle}>{title}</Text><Text style={st.meta}>{detail}</Text></Pressable>)}<View style={st.card}><Text style={st.jobtitle}>Job-specific CVs & cover letters</Text><Text style={st.meta}>Generate drafts from a real vacancy and your uploaded CV, then edit and share.</Text><Btn title="Open tailored documents" outline onPress={()=>router.push('/tailored' as any)}/></View><View style={st.card}><Text style={st.jobtitle}>WhatsApp and commute alerts</Text><Text style={st.meta}>Share jobs directly from job details. Automatic WhatsApp alerts and live journey-time filters need configured commercial providers.</Text></View></>:<>
+<Btn outline title="← All career tools" onPress={()=>{setTab(null);setData(null)}}/><View style={{height:15}}/>
+{loading?<Text style={st.meta}>Loading…</Text>:null}{error?<Text style={st.error}>{error}</Text>:null}
+{tab==='comparison'?<View style={st.card}><Text style={st.jobtitle}>Compare selected jobs</Text><Text style={st.meta}>Open a vacancy, select "Add / remove job comparison", then return here. Unknown salary data is never guessed.</Text>{(data?.items||[]).length?data.items.map((j:any)=><View key={j.id} style={[st.card,{backgroundColor:'#f7faff'}]}><Text style={st.jobtitle}>{j.title}</Text><Text style={st.meta}>{j.company} · {j.location}</Text><Text style={st.meta}>Salary: {j.salary_min?`${j.currency||''} ${j.salary_min}`:'Not published'}</Text><Text style={st.meta}>Last seen: {j.trust?.freshness||'Not verified'}</Text></View>):<Empty title="Select at least 2 jobs" detail="Choose jobs from the vacancy details screen."/>}<Btn outline title="Clear selection" onPress={async()=>{await clearCompared();open('comparison')}}/></View>:null}
+{tab==='walkins'?<View style={st.card}><Text style={st.jobtitle}>Upcoming interview events</Text>{data?.items?.length?data.items.map((e:any)=><View key={e.id} style={st.card}><Text style={st.jobtitle}>{e.title} — {e.company}</Text><Text style={st.meta}>{e.venue}, {e.city} · {e.starts_at}</Text><Text style={st.meta}>{e.requirements}</Text><Btn outline title="Original announcement ↗" onPress={()=>Linking.openURL(e.source_url)}/></View>):<Empty title="No reviewed events" detail="Events appear only after an admin reviews and publishes a source-backed announcement."/>}</View>:null}
+{tab==='report'?<View style={st.card}><Text style={st.jobtitle}>Last 8 weeks</Text><Text style={st.meta}>These are your CareerRadar records, not applications sent on other platforms.</Text>{data?.weeks?.map((w:any)=><View key={w.week_start} style={[st.row,{paddingVertical:12,borderBottomWidth:1,borderColor:C.line}]}><Text style={st.meta}>{w.week_start}</Text><Text style={st.meta}>{w.applications_added} apps · {w.jobs_saved} saved · {w.alerts_received} alerts</Text></View>)}<Text style={[st.meta,{marginTop:14}]}>Follow-ups due: {data?.due_followups?.length||0}</Text></View>:null}
+{tab==='offer'?<View style={st.card}><Text style={st.jobtitle}>Offer warning check</Text><Text style={st.meta}>Text-only heuristic, NOT an official validation. Do not paste sensitive identity or bank details.</Text><TextInput multiline style={[st.input,{minHeight:135}]} value={offer} onChangeText={setOffer} placeholder="Paste job offer text"/><Btn title="Check for warning terms" onPress={checkOffer} disabled={offer.length<10||loading}/>{data?.warning_signs?<Text style={[st.meta,{marginTop:16}]}>{data.warning_signs.length?data.warning_signs.join('; '):'No configured warning patterns matched. This does not establish authenticity.'}</Text>:null}<View style={{height:15}}/><Btn outline title="Visit official MOHRE website ↗" onPress={()=>Linking.openURL('https://www.mohre.gov.ae/')}/></View>:null}
+{tab==='email'?<View style={st.card}><Text style={st.jobtitle}>Manual email review</Text><Text style={st.meta}>No connected inbox. Paste a recruiter message and review a possible status before manually updating your tracker.</Text><TextInput style={st.input} value={subject} onChangeText={setSubject} placeholder="Email subject"/><TextInput multiline style={[st.input,{minHeight:110}]} value={emailText} onChangeText={setEmailText} placeholder="Paste email text"/><Btn title="Identify status" onPress={reviewEmail} disabled={loading}/>{data?.suggested_status?<Text style={[st.meta,{marginTop:12}]}>Suggested status: {data.suggested_status}. This does not automatically update your application.</Text>:null}</View>:null}
+{tab==='shares'?<View style={st.card}><Text style={st.jobtitle}>CV share links</Text>{DEMO_MODE?<Text style={st.meta}>Secure CV links require an online account and uploaded CV. No public file sharing takes place in demo mode.</Text>:data?.length?data.map((s:any)=><View key={s.id} style={st.card}><Text style={st.jobtitle}>{s.filename}</Text><Text style={st.meta}>Expires {s.expires_at} · {s.open_count}/{s.max_opens} openings</Text><Btn outline title={s.revoked_at?'Already revoked':'Revoke link'} disabled={Boolean(s.revoked_at)} onPress={async()=>{try{await call('/cv/shares/'+s.id,'DELETE');open('shares')}catch(e){Alert.alert('Error',(e as Error).message)}}}/></View>):<Text style={st.meta}>No active or past shares. Upload a CV using the web Resume Center, and create a limited private sharing link there.</Text>}</View>:null}
+</>}
+</Layout>}

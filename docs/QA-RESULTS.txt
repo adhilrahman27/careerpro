@@ -1,0 +1,11 @@
+CareerRadar Pro local verification record — 27 October 2026
+
+1. pytest -q tests: six tests passed; zero test warnings after startup lifespan update.
+2. node --check web/assets/app.js: passed.
+3. python -m compileall -q server: passed.
+4. 11 TypeScript/TSX files parsed using installed TypeScript transpileModule: no syntax diagnostics; not full build or typecheck.
+5. Browser registration → profile → job alert → application smoke (real FastAPI/TestClient backend via browser bridge): passed.
+6. Responsive desktop/mobile screenshots captured using browser with a stubbed empty-job API (no fabricated vacancies).
+7. Local health endpoint responded 200.
+
+NOT TESTED: real Greenhouse/Lever production calls, native app build/emulator, real notifications, AI/billing, production PostgreSQL/Supabase RLS, restore from backup, security penetration testing, store submission.

@@ -1,0 +1,14 @@
+CareerRadar Pro v0.3 — verified locally 28 Oct 2026
+
+Unit/integration/API tests: 10 passed
+Browser/API-bridge smoke: passed (registration, profile, alert, application, email status, weekly report, walk-in navigation, mobile responsive presentation)
+Web JavaScript syntax: node --check passed
+Python modules: compileall passed
+Expo mobile TypeScript/TSX: transpileModule syntax check of 14 files passed (NOT a full dependency typecheck)
+Native Android APK/AAB build: NOT attempted; missing Android build prerequisites
+Physical device testing: NOT performed
+External source live reliability: NOT verified
+Automatic Gmail/Outlook, WhatsApp Business, Maps ETA, payments: NOT CONNECTED
+CV sharing: limited expiry/revoke/open count and user-isolation tests passed
+
+Do not mistake successful source-level checks for completed production QA.

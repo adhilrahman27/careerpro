@@ -1,0 +1,11 @@
+import React,{useState,useCallback} from 'react';
+import {Text,View} from 'react-native';
+import {router,useFocusEffect} from 'expo-router';
+import {Profile,call,getToken,logout} from '../../src/api';
+import {Layout,Field,Btn,st} from '../../src/ui';
+const blank:Profile={full_name:'',headline:'',country:'United Arab Emirates',city:'Dubai',desired_titles:'',skills:'',years_experience:0,salary_min:null,salary_currency:'AED',summary:''};
+export default function ProfileScreen(){const [p,setP]=useState<Profile>(blank),[error,setError]=useState(''),[signed,setSigned]=useState(false),[busy,setBusy]=useState(false);
+useFocusEffect(useCallback(()=>{(async()=>{try{if(!await getToken()){setSigned(false);return}setSigned(true);setP(await call<Profile>('/profile'));setError('')}catch(e){setError((e as Error).message)}})()},[]));
+const change=(key:keyof Profile)=>(v:string)=>setP(old=>({...old,[key]:v}));
+const save=async()=>{setBusy(true);try{await call('/profile','PUT',p);setError('Saved successfully')}catch(e){setError((e as Error).message)}finally{setBusy(false)}};
+return <Layout title="My profile" subtitle="Make job relevance checks more helpful with accurate skills and preferences.">{error?<Text style={[st.error,error.includes('Saved')?{color:'#16876d'}:undefined]}>{error}</Text>:null}{signed?<View style={st.card}><Field label="Full name" value={p.full_name} onChange={change('full_name')}/><Field label="Headline" value={p.headline} onChange={change('headline')}/><Field label="Preferred city" value={p.city} onChange={change('city')}/><Field label="Country" value={p.country} onChange={change('country')}/><Field label="Desired titles" value={p.desired_titles} onChange={change('desired_titles')}/><Field label="Skills (comma-separated)" value={p.skills} onChange={change('skills')} multiline/><Field label="Professional summary" value={p.summary} onChange={change('summary')} multiline/><Btn title={busy?'Saving…':'Save profile'} onPress={save} disabled={busy}/><View style={{marginTop:18}}><Btn outline title="Sign out" onPress={async()=>{await logout();setSigned(false);router.replace('/login')}}/></View></View>:<Btn title="Sign in or register" onPress={()=>router.push('/login')}/>}</Layout>}
